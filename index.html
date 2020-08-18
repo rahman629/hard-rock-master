@@ -1,0 +1,248 @@
+  
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Hard Rock Solution - Song Lyric App</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <!-- Custom css -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <nav class="navbar  navbar-dark my-3">
+            <a class="navbar-brand" href="#">
+                <img src="images/logo.png" alt="Hard Rock Solution">
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId" aria-expanded="false" aria-label="Toggle navigation">
+                <img src="images/toggler-icon.svg" alt="">
+            </button>
+            <div class="collapse navbar-collapse" id="collapsibleNavId">
+                <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Link</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownId">
+                            <a class="dropdown-item" href="#">Action 1</a>
+                            <a class="dropdown-item" href="#">Action 2</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <main class="content-area">
+            <div class="search-bar col-md-6 mx-auto">
+                <h1 class="text-center">Lyrics Search</h1>
+                <div class="search-box my-5">
+                    <input id="inputSong" type="text" class="form-control" placeholder="Enter your artist song name">
+                    <button id="searchBtn" class="btn btn-success search-btn">Search</button>
+                </div>
+            </div>
+            <!-- === Simple results === -->
+            <!-- <div class="d-flex justify-content-center">
+                <div id="searchResults" class="">
+                    <p class="author lead"><strong>Purple Noon</strong> Album by <span>Washed Out</span> <button class="btn btn-success">Get Lyrics</button></p>
+                    <p class="author lead"><strong>Purple Noon</strong> Album by <span>Washed Out</span> <button class="btn btn-success">Get Lyrics</button></p>
+                    <p class="author lead"><strong>Purple Noon</strong> Album by <span>Washed Out</span> <button class="btn btn-success">Get Lyrics</button></p>
+                    <p class="author lead"><strong>Purple Noon</strong> Album by <span>Washed Out</span> <button class="btn btn-success">Get Lyrics</button></p>
+                    <p class="author lead"><strong>Purple Noon</strong> Album by <span>Washed Out</span> <button class="btn btn-success">Get Lyrics</button></p>
+                </div>
+            </div> -->
+            <!-- Single Lyrics -->
+            <!-- <div class="single-lyrics text-center">
+                <button class="btn go-back">&lsaquo;</button>
+                <h2 class="text-success mb-4">Pentatonix - Na Na Na</h2>
+                <pre class="lyric text-white">
+    Wont go whistling like the wind blows,
+    Looking out my window,
+    Just to see the shine
+    Maybe you might call it crazy,
+    How Im acting lately,
+    Skipping through the sky
+     I see so clearly,
+    Why Im always feeling free.
+    So I sleep when my dreams,
+    Looking like reality
+    (Gonna feel it! Na na na...) x4
+    Gonna feel it!
+    I know where the greener grass grows
+    Youll just have to follow
+    To the other side
+     Lets go tiptoe on a tight rope,
+    Fallings only natural
+    Just spread your wings and fly
+    Youll see so clearly,
+    Why Im always feeling free.
+    So I sleep when our dreams
+    Looking like reality
+    (Gonna feel it! Na na na...) x4
+    Bring it down like
+    Ohh way oh
+    Yeah yeah yeah yeah yeah yeah
+    Break it down like
+    Ohh way oh
+     Yeah, yeah, yeah...
+    All around like
+    Ohh way oh
+    Yeah, yeah, yeah...
+    Sing it loud like!
+    Ohh way oh
+    Ah oo oo ooo
+     Gonna feel it! (Na na na...)
+     Make it sound like! (Na na na...)
+    All around like! (Na na na...)
+    Sing it loud like! (Na na na...)
+    Gonna feel like! (Na na na...)
+                </pre>
+            </div> -->
+            <div>
+            <!-- === Fancy results === -->
+            <div id="displayResult" class="search-result  mx-auto ">
+                
+                <!-- single result -->
+                <div  class="single-result row align-items-center my-3 p-3">
+                    <div  class="col-md-12">
+                        <h3 class="lyrics-name">Search Results</h3>
+                    </div>                    
+                </div></div>
+                <!-- ./ single result -->
+            </div>
+</main>
+</div>
+    
+
+        
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.16/clipboard.min.js"></script>
+    <!-- Custom Script Here -->
+
+<script>
+    // Setting variable
+    let inputSong = document.getElementById("inputSong")
+    let searchResults = document.getElementById("searchResults")
+    let searchBtn = document.getElementById("searchBtn")
+
+    const apiUrl = `https://api.lyrics.ovh`
+    
+    //Searching Part 
+    searchBtn.addEventListener("click", function(){        
+        fetch(`${apiUrl}/suggest/${inputSong.value}`)
+        .then(res => res.json())
+        .then(data =>{            
+            var list = [];
+            for (let i = 0; i < 10; i++) {
+                const element = data.data[i];
+                const item = {
+                    artistName: element.artist.name,
+                    songName:  element.title,
+                    albumName: element.album.title,
+                    albumCover: element.album.cover
+                }
+        
+                // console.log(item) => To see the item on Console
+                    list.push(item);
+                
+            }        
+            
+        console.log(list)
+        console.log(data)
+        
+        // After Searching Part
+        let displayResult = document.getElementById('displayResult');
+        for (let i = 0; i < 10; i++) {
+            const {songName, artistName, albumName, albumCover} = list[i];
+            let displayResult = document.getElementById('displayResult');
+                displayResult.style.display = "block"
+                document.getElementById("displayResult").innerHTML += 
+                `<div  class="search-result col-md-8 mx-auto py-4">
+                <div class="single-result row align-items-center my-3 p-3">
+                    <div class="col-md-3">
+                    
+                    <img src="${albumCover}" alt="">
+               </div>
+                <div class="col-md-6">
+                    <h3 class="lyrics-name">${songName}</h3>
+                    <p class="author lead">Album by <span id="artistName">${artistName}</span></p>
+                    <p class="author lead">Album Name: <span id="artistName">${albumName}</span></p>
+                </div>
+                
+                <div class="col-md-3 text-md-right text-center">
+                    <button class="btn btn-success" data-artist='${artistName}' data-songTitle='${songName}' data-album='${albumName}' data-cover='${albumCover}'>Get Lyrics</button>
+                </div>
+                </div>
+                </div>`
+        }  
+                      
+        })
+        .catch(err => consol.log(err))
+        
+    })
+// GET Lyrics Clicking Part
+    displayResult.addEventListener('click', e=>{
+    const clickedElement = e.target;
+
+    if (clickedElement.tagName === 'BUTTON'){
+        const dataArtist = clickedElement.getAttribute('data-artist');
+        const dataSongTitle = clickedElement.getAttribute('data-songTitle');
+        const dataAlbum = clickedElement.getAttribute('data-album');
+        const dataCover = clickedElement.getAttribute('data-cover');
+        
+        getLyrics(dataArtist, dataSongTitle, dataAlbum, dataCover)
+    }
+    })
+
+
+// Lyrics Part
+async function getLyrics(dataArtist, dataSongTitle, dataAlbum, dataCover) {
+    const res = await fetch(`${apiUrl}/v1/${dataArtist}/${dataSongTitle}/`);
+    const data = await res.json();
+  
+    if (data.error) {
+        alert("No Lyrics Found");
+    } 
+    else {
+        const lyrics = data.lyrics.replace(/(\r\n|\r|\n)/g, '<br>');
+  
+    displayResult.innerHTML = `<div  class="search-result col-md-8 mx-auto py-4">
+                <div class="single-result row align-items-center my-3 p-3">
+                    <div class="col-md-3">
+                    
+                    <img src="${dataCover}" alt="">
+               </div>
+                <div class="col-md-6">
+                    <h3 class="lyrics-name">${dataSongTitle}</h3>
+                    <p class="author lead">Album by <span id="artistName">${dataArtist}</span></p>
+                    <p class="author lead">Album Name: <span id="artistName">${dataAlbum}</span></p>
+                </div>
+                
+                <div class="col-md-3 text-md-right text-center">
+                    
+                </div>
+                </div>
+                </div>
+    <p align=center>${lyrics}</p>`;
+    }
+}
+        
+</script>
+</body>
+
+</html>
